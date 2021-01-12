@@ -10,6 +10,8 @@ const {
   createAdvert,
   deleteAdvert,
   updateAdvert,
+  getFavoriteAdverts,
+  saveFavoriteAdvert
 } = require("../controllers/adverts.controlles");
 
 router.route("/")
@@ -26,5 +28,10 @@ router.route("/editar/:id")
 
 router.route( "/allAdverts")
     .get(isAuthenticated, getManagerAdverts)
+
+router.route("/favorite/:userId")
+    .post(isAuthenticated, saveFavoriteAdvert)    
+    .get(isAuthenticated, getFavoriteAdverts)
+
 
 module.exports = router;

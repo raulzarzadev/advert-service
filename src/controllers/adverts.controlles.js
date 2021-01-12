@@ -1,4 +1,6 @@
+const { findByIdAndUpdate } = require("../models/Advert");
 const Advert = require("../models/Advert");
+const Favorite = require("../models/Favorite");
 
 const advertsCtrl = {};
 
@@ -140,6 +142,47 @@ advertsCtrl.deleteAdvert = async (req, res) => {
     const result = await cloudinary.v2.uploader.destroy(photo.public_id); */
   await Advert.findByIdAndRemove(req.params.id);
   res.json({ message: "Advert deleted", ok: true });
+};
+
+advertsCtrl.saveFavoriteAdvert = async (req, res) => {
+  console.log("post", req.body, req.params);
+  const { advertId } = req.body;
+  const { userId } = req.params;
+  const favorite = await Favorite.findOneAndUpdate(
+    { user: userId },
+    { $push: { favoriteAdverts: advertId } },
+    { new: true }
+  );
+  console.log(favorite);
+  if (!favorite) {
+    const newFavorite = new Favorite({
+      user: userId,
+      favoriteAdverts: [advertId],
+    });
+    await newFavorite.save();
+    console.log(newFavorite);
+    return res.json({
+      ok: true,
+      message: "Favorite List Created",
+      type: "createdFav",
+    });
+  }
+  return res.json({
+    ok: true,
+    message: "Favorite List Updated",
+    type: "updatedFav",
+  });
+};
+
+advertsCtrl.getFavoriteAdverts = async (req, res) => {
+  const { userId } = req.params;
+  const { favoriteAdverts } = await Favorite.findOne({ user: userId });
+  const adverts = await Advert.find({ _id: { $in: favoriteAdverts } });
+  return res.json({
+    ok: true,
+    type: "getFavoriteSuccess",
+    adverts,
+  });
 };
 
 module.exports = advertsCtrl;
