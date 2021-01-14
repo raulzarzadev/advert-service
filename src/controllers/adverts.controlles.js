@@ -148,7 +148,7 @@ advertsCtrl.saveFavoriteAdvert = async (req, res) => {
   console.log("post", req.body, req.params);
   const { advertId } = req.body;
   const { userId } = req.params;
-  const  list = await Favorite.findOneAndUpdate(
+  const list = await Favorite.findOneAndUpdate(
     { user: userId },
     { $push: { favoriteAdverts: advertId } },
     { new: true }
@@ -171,21 +171,20 @@ advertsCtrl.saveFavoriteAdvert = async (req, res) => {
     ok: true,
     message: "Favorite List Updated",
     type: "updatedFav",
-    favoriteAdverts:list.favoriteAdverts,
+    favoriteAdverts: list.favoriteAdverts,
   });
 };
 
 advertsCtrl.getFavoriteAdverts = async (req, res) => {
   const { userId } = req.params;
-  const { favoriteAdverts } = await Favorite.findOne({ user: userId });
-  if (!favoriteAdverts)
+  const list = await Favorite.findOne({ user: userId });
+  if (!list)
     return res.json({
       ok: false,
       type: "getFavoriteFail",
       message: "No Favorite Yet",
-      adverts: [],
     });
-  const adverts = await Advert.find({ _id: { $in: favoriteAdverts } });
+  const adverts = await Advert.find({ _id: { $in: list.favoriteAdverts } });
   return res.json({
     ok: true,
     type: "getFavoriteSuccess",
@@ -195,12 +194,20 @@ advertsCtrl.getFavoriteAdverts = async (req, res) => {
 
 advertsCtrl.getFavoriteList = async (req, res) => {
   const { userId } = req.params;
-  const { favoriteAdverts } = await Favorite.findOne({ user: userId });
-  return res.json({
-    ok: true,
-    type: "getFavoriteSuccess",
-    favoriteAdverts,
-  });
+  const list = await Favorite.findOne({ user: userId });
+  if (!list) {
+    return res.json({
+      ok: true,
+      type: "getFavoriteFail",
+      type2: "favoriteListEmpty",
+    });
+  } else {
+    return res.json({
+      ok: true,
+      type: "getFavoriteSuccess",
+      favoriteAdverts: list.favoriteAdverts,
+    });
+  }
 };
 
 advertsCtrl.deleteFavoriteAdvert = async (req, res) => {
