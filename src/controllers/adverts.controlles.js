@@ -75,6 +75,7 @@ advertsCtrl.createAdvert = async (req, res) => {
 };
 
 advertsCtrl.updateAdvert = async (req, res) => {
+  console.log(req.params.id);
   const {
     title,
     contacts,
