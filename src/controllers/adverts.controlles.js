@@ -211,13 +211,11 @@ advertsCtrl.getFavoriteList = async (req, res) => {
 };
 
 advertsCtrl.deleteFavoriteAdvert = async (req, res) => {
-  console.log("paso");
   const { advertId } = req.body;
   const { userId } = req.params;
   const { favoriteAdverts } = await Favorite.findOneAndUpdate(
     { user: userId },
-    { $pull: { favoriteAdverts: advertId } },
-    { new: true }
+    { $pull: { favoriteAdverts: advertId } }
   );
   res.json({
     ok: true,

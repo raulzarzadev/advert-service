@@ -8,7 +8,9 @@ const favoriteAdvert = new Schema(
       trim: true,
       unique: true,
     },
-    favoriteAdverts: [{ type: String, index: true, unique: true }],
+    favoriteAdverts: {
+      type: Array,
+    },
   },
   {
     timestamps: true,
