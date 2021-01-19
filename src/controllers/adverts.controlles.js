@@ -1,4 +1,3 @@
-const { findByIdAndUpdate } = require("../models/Advert");
 const Advert = require("../models/Advert");
 const Favorite = require("../models/Favorite");
 
@@ -34,28 +33,16 @@ advertsCtrl.createAdvert = async (req, res) => {
   const {
     title,
     contacts,
-    postalCode,
     description,
-    tel,
-    whatsApp,
-    faceUrl,
-    instaUrl,
-    siteUrl,
     location,
     labels,
     image,
     classification,
-    businessMail,
-    styles,
     backgroundColor,
-    delivery,
     barrio,
     address,
     isPublished,
     publishedOn,
-    price,
-    state,
-    schedule,
   } = req.body.advert;
 
   /* TODO ahora no se restan form credit  cuando creas un adert */
@@ -70,25 +57,15 @@ advertsCtrl.createAdvert = async (req, res) => {
 
   const newAdvert = new Advert({
     owner: req.user.id,
-    contacts,
-    barrio,
     title,
-    postalCode,
+    contacts,
     description,
-    tel,
-    image,
-    whatsApp,
-    faceUrl,
-    instaUrl,
-    siteUrl,
-    businessMail,
     location,
-    postalCode,
     labels,
-    styles,
+    image,
     classification,
     backgroundColor,
-    delivery,
+    barrio,
     address,
     isPublished,
     publishedOn,
@@ -101,7 +78,6 @@ advertsCtrl.updateAdvert = async (req, res) => {
   const {
     title,
     contacts,
-    postalCode,
     description,
     location,
     labels,
@@ -116,19 +92,17 @@ advertsCtrl.updateAdvert = async (req, res) => {
 
   await Advert.findByIdAndUpdate(req.params.id, {
     title,
-    description,
     contacts,
+    description,
+    location,
     labels,
     image,
     classification,
     backgroundColor,
+    barrio,
     address,
     isPublished,
     publishedOn,
-    barrio,
-    postalCode,
-    location,
-    postalCode,
   });
 
   res.json({ ok: true, message: "Actualizando Anuncio" });
