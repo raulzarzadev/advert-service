@@ -91,22 +91,30 @@ advertsCtrl.updateAdvert = async (req, res) => {
     publishedOn,
   } = req.body.advert;
 
-  await Advert.findByIdAndUpdate(req.params.id, {
-    title,
-    contacts,
-    description,
-    location,
-    labels,
-    image,
-    classification,
-    backgroundColor,
-    barrio,
-    address,
-    isPublished,
-    publishedOn,
-  });
+  const updatedAdverd = await Advert.findByIdAndUpdate(
+    req.params.id,
+    {
+      title,
+      contacts,
+      description,
+      location,
+      labels,
+      image,
+      classification,
+      backgroundColor,
+      barrio,
+      address,
+      isPublished,
+      publishedOn,
+    },
+    { new: true }
+  );
 
-  res.json({ ok: true, message: "Actualizando Anuncio" });
+  res.json({
+    ok: true,
+    message: "Actualizando Anuncio",
+    advert: updatedAdverd,
+  });
 };
 
 advertsCtrl.deleteAdvert = async (req, res) => {

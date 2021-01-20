@@ -68,7 +68,7 @@ barriosCtrl.updateBarrio = async (req, res) => {
     price,
     owner,
   });
-  res.json({ message: "Actualizando Anuncio" });
+  res.json({ message: "Actualizando Barrio" });
 };
 
 module.exports = barriosCtrl;
