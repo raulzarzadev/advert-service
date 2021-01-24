@@ -27,6 +27,9 @@ router.route("/:id")
     .get(isAuthenticated, getAdvertsByOwner)
     .delete(isAuthenticated, deleteAdvert);
 
+router.route("/user/:id")
+    .get(isAuthenticated, getAdvertsByOwner)
+
 router.route("/editar/:id") 
     .put(updateAdvert)
     .get(isAuthenticated, getAdvert);

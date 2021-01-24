@@ -5,24 +5,24 @@ const advertsCtrl = {};
 
 advertsCtrl.getPublishedAdverts = async (req, res) => {
   const adverts = await Advert.find({ isPublished: true }, { publishedOn: 1 });
-  res.json({ ok: true, adverts });
+  res.json({ ok: true, type: "pubAds", adverts });
 };
 
 advertsCtrl.getAllAdverts = async (req, res) => {
   const adverts = await Advert.find();
-  res.json({ ok: true, adverts });
+  res.json({ ok: true, type: "allAds", adverts });
 };
 
 advertsCtrl.getAdvertsByOwner = async (req, res) => {
   const { id } = req.params;
   const adverts = await Advert.find({ owner: id });
-  res.json({ ok: true, adverts });
+  res.json({ ok: true, type: "ownerAds", adverts });
 };
 
 advertsCtrl.getAdvert = async (req, res) => {
   const advert = await Advert.findById(req.params.id);
   //console.log('getadvert', req.user)
-  res.json({ ok: true, advert });
+  res.json({ ok: true, type: "singleAd", advert });
 };
 
 advertsCtrl.createAdvert = async (req, res) => {
